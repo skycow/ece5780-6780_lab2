@@ -12,6 +12,7 @@
         int currDeadline; //At the start =period
         int NUMmissedDeadlines = 0; //At the start =0
         bool preemted = false;
+		bool done = false;
 	};
 
 std::vector<TASK> priSort(std::vector<TASK> tosort);
@@ -136,9 +137,11 @@ for (int i = 0; i < simTime; i++) //should i increment before or after?
 				priority[k].NUMmissedDeadlines++;
 				priority[k].runtime = 0;
 			}
-			priority[k].released = true;
-			priority[k].currDeadline += priority[k].per;
-            std::cout << i << " : " << priority[k].name << " was released.\n";
+			if(!priority[k].released){
+				priority[k].released = true;
+				priority[k].currDeadline += priority[k].per;
+				std::cout << i << " : " << priority[k].name << " was released.\n";
+			}
 		}
 	}
 	for (int k = 0; k < atasks.size(); k++)
