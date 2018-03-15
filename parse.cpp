@@ -146,14 +146,14 @@ for (int i = 0; i < simTime; i++) //should i increment before or after?
 	}
 	for (int k = 0; k < atasks.size(); k++)
 	{
-		if(!atasks[k].done){
-			if (atasks[k].per <= i)
+		if(!apriority[k].done){
+			if (apriority[k].per <= i)
 			{
-				if(i == atasks[k].per+500){
-					priority[k].NUMmissedDeadlines++;
+				if(i == apriority[k].per+500){
+					apriority[k].NUMmissedDeadlines++;
 				}
-				priority[k].released = true;
-				std::cout << i << " : " << priority[k].name << " was released.\n";
+				apriority[k].released = true;
+				std::cout << i << " : " << apriority[k].name << " was released.\n";
 			}
 		}
 	}
