@@ -32,14 +32,19 @@ int main(int argc, char** argv) {
 
 
 	std::vector<TASK> tasks;
+	std::vector<TASK> atasks;
+
 	if (infile.is_open()) {
 
+		//periodic tasks
 		std::getline(infile, line);
         numTasks = std::stoi(line);
 		std::getline(infile, line);
         simTime = std::stoi(line);
 		TASK newTask;
-		while (std::getline(infile, line)) {
+		for (int l = 0; l < numTasks; l++)
+		{
+			std::getline(infile, line)) {
 			size_t pos = 0;
 			pos = line.find(", ");
 			newTask.name = line.substr(0, pos);
@@ -50,6 +55,27 @@ int main(int argc, char** argv) {
 			newTask.per = std::stoi(line);
             newTask.currDeadline = newTask.per;
 			tasks.push_back(newTask);
+		}
+
+		//aperiodic tasks
+		std::getline(infile, line);
+        numTasks = std::stoi(line);
+		std::getline(infile, line);
+        simTime = std::stoi(line);
+		TASK newTask;
+		for (int l = 0; l < numTasks; l++)
+		{
+			std::getline(infile, line)) {
+			size_t pos = 0;
+			pos = line.find(", ");
+			newTask.name = line.substr(0, pos);
+			line.erase(0, pos + 2);
+			pos = line.find(", ");
+			newTask.comp = std::stoi(line.  substr(0, pos));
+			line.erase(0, pos + 2);
+			newTask.per = std::stoi(line);
+            newTask.currDeadline = newTask.per;
+			atasks.push_back(newTask);
 		}
 		
 
