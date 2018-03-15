@@ -15,6 +15,7 @@
 	};
 
 std::vector<TASK> priSort(std::vector<TASK> tosort);
+std::vector<TASK> priSort2(std::vector<TASK> tosort);
 
 int main(int argc, char** argv) {
 
@@ -81,7 +82,7 @@ int main(int argc, char** argv) {
     /// Read in file ///
 
 
-    std::vector<TASK> priority = priSort(tasks);
+    std::vector<TASK> priority = priSort2(tasks);
     int numPreemptions = 0;
 
 
@@ -187,6 +188,24 @@ std::vector<TASK> priSort(std::vector<TASK> tosort){
         changed = false;
         for(int i = 0; i < tosort.size()-1; i++){
             if(tosort[i].per > tosort[i+1].per){
+                temp = tosort[i];
+                tosort[i] = tosort[i+1];
+                tosort[i+1] = temp;
+                changed = true;
+            }
+        }
+    }
+    return tosort;
+}
+
+std::vector<TASK> priSort2(std::vector<TASK> tosort){
+    TASK temp;
+    bool changed = true;
+
+    while(changed) {
+        changed = false;
+        for(int i = 0; i < tosort.size()-1; i++){
+            if(tosort[i].currDeadline > tosort[i+1].currDeadline){
                 temp = tosort[i];
                 tosort[i] = tosort[i+1];
                 tosort[i+1] = temp;
