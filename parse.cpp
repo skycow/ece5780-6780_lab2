@@ -113,6 +113,7 @@ int main(int argc, char** argv) {
 
     std::vector<TASK> priority = priSort2(tasks);
     int numPreemptions = 0;
+	bool pTask = false;
 
 
     std::cout << "-------" << std::endl;
@@ -126,10 +127,38 @@ int main(int argc, char** argv) {
 
 for (int i = 0; i < simTime; i++) //should i increment before or after?
 {
+	for (int k = 0; k < tasks.size(); k++)
+	{
+		if (priority[k].currDeadline == i)
+		{
+			if(priority[k].released){
+				priority[k].NUMmissedDeadlines++;
+				priority[k].runtime = 0;
+			}
+			priority[k].released = true;
+			priority[k].currDeadline += priority[k].per;
+            std::cout << i << " : " << priority[k].name << " was released.\n";
+		}
+	}
+	for (int k = 0; k < atasks.size(); k++)
+	{
+		if(!atasks[k].done){
+			if (atasks[k].per <= i)
+			{
+				if(i == atasks[k].per+500){
+					priority[k].NUMmissedDeadlines++;
+				}
+				priority[k].released = true;
+				std::cout << i << " : " << priority[k].name << " was released.\n";
+			}
+		}
+	}
+	pTask = false;
 	for (int t = 0; t < tasks.size(); t++)
 	{
 		if (priority[t].released)
 		{
+			pTask = true;
             std::cout << i << " : " << priority[t].name << " is running\n";
 			priority[t].preemted = false; //task is currently running
 			for (int t1 = 0; t1 < tasks.size(); t1++) //checking if a task was preemptively halted
@@ -163,34 +192,51 @@ for (int i = 0; i < simTime; i++) //should i increment before or after?
 			{
 				priority[t].NUMmissedDeadlines += 1;
 			}
-			for (int k = 0; k < tasks.size(); k++)
-			{
-				if (priority[k].currDeadline == i)
-				{
-					if (priority[k].released)
-					{
-						priority[k].NUMmissedDeadlines += 1;
-						priority[k].currDeadline += priority[k].per;
-					}else{
-                        priority[k].released = true;
-                        std::cout << i << " : " << priority[k].name << " was released.\n";
-                    }
-				}
-				else if (priority[k].currDeadline == i + 1)
-				{
-					priority[k].released = true;
-                    std::cout << i << " : " << priority[k].name << " was released.\n";
-				}
-			}
 			break;
 		}
 	}
-    for (int k = 0; k < tasks.size(); k++)
-	{
-		if (priority[k].currDeadline == i +1)
+	if(!pTask){
+		std::vector<TASK> apriority = priSort2(atasks);
+		for (int t = 0; t < tasks.size(); t++)
 		{
-			priority[k].released = true;
-               std::cout << i << " : " << priority[k].name << " was released.\n";
+			if (apriority[t].released)
+			{
+				pTask = true;
+				std::cout << i << " : " << apriority[t].name << " is running\n";
+				apriority[t].preemted = false; //task is currently running
+				for (int t1 = 0; t1 < tasks.size(); t1++) //checking if a task was preemptively halted
+				{
+					if (t1 != t)
+					{
+						if (apriority[t1].runtime != 0 && !apriority[t1].preemted)
+						{
+							apriority[t1].preemted = true;
+							numPreemptions++;
+							std::cout << i << " : " << apriority[t1].name << " is being preempted.\n";
+						}
+					}
+				}
+				apriority[t].runtime += 1;
+				if (apriority[t].runtime == apriority[t].comp)
+				{
+					std::cout << i << " : " << apriority[t].name << " has completed execution.\n";
+					if (apriority[t].currDeadline != i + 1)
+					{
+						apriority[t].released = false;
+						apriority[t].done = true;
+					}
+					else
+					{
+						apriority[t].currDeadline += apriority[t].per;
+						apriority[t].done = true;
+					}
+				}
+							if (apriority[t].currDeadline == i)
+				{
+					apriority[t].NUMmissedDeadlines += 1;
+				}
+				break;
+			}
 		}
 	}
 }
