@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
 		TASK newTask;
 		for (int l = 0; l < numTasks; l++)
 		{
-			std::getline(infile, line)) {
+			std::getline(infile, line);
 			size_t pos = 0;
 			pos = line.find(", ");
 			newTask.name = line.substr(0, pos);
@@ -60,12 +60,9 @@ int main(int argc, char** argv) {
 		//aperiodic tasks
 		std::getline(infile, line);
         numTasks = std::stoi(line);
-		std::getline(infile, line);
-        simTime = std::stoi(line);
-		TASK newTask;
 		for (int l = 0; l < numTasks; l++)
 		{
-			std::getline(infile, line)) {
+			std::getline(infile, line);
 			size_t pos = 0;
 			pos = line.find(", ");
 			newTask.name = line.substr(0, pos);
@@ -86,9 +83,15 @@ int main(int argc, char** argv) {
 		std::cout << "Unable to open file.";
 	}
 
+	for(auto tsk : tasks){
+        std::cout << tsk.name << " ";
+        std::cout << tsk.comp << " ";
+        std::cout << tsk.per << std::endl << std::endl;
+    }
 
+    std::cout << "-------" << std::endl;
 
-    for(auto tsk : tasks){
+    for(auto tsk : atasks){
         std::cout << tsk.name << " ";
         std::cout << tsk.comp << " ";
         std::cout << tsk.per << std::endl << std::endl;
