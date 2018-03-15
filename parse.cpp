@@ -149,11 +149,13 @@ for (int i = 0; i < simTime; i++) //should i increment before or after?
 		if(!apriority[k].done){
 			if (apriority[k].per <= i)
 			{
-				if(i == apriority[k].per+500){
+				if(i == 500){
 					apriority[k].NUMmissedDeadlines++;
 				}
-				apriority[k].released = true;
-				std::cout << i << " : " << apriority[k].name << " was released.\n";
+				if(!apriority[k].released){
+					apriority[k].released = true;
+					std::cout << i << " : " << apriority[k].name << " was released.\n";
+				}
 			}
 		}
 	}
@@ -193,21 +195,21 @@ for (int i = 0; i < simTime; i++) //should i increment before or after?
 			if (priority[t].runtime == priority[t].comp)
 			{
                 std::cout << i << " : " << priority[t].name << " has completed execution.\n";
-				if (priority[t].currDeadline != i + 1)
-				{
+				// if (priority[t].currDeadline != i + 1)
+				// {
 					priority[t].released = false;
-					priority[t].runtime = 0;
-				}
-				else
-				{
-					priority[t].currDeadline += priority[t].per;
+				// 	priority[t].runtime = 0;
+				// }
+				// else
+				// {
+					// priority[t].currDeadline += priority[t].per;
                     priority[t].runtime = 0;
-				}
+				// }
 			}
-						if (priority[t].currDeadline == i)
-			{
-				priority[t].NUMmissedDeadlines += 1;
-			}
+			// if (priority[t].currDeadline == i)
+			// {
+			// 	priority[t].NUMmissedDeadlines += 1;
+			// }
 			break;
 		}
 	}
@@ -240,11 +242,12 @@ for (int i = 0; i < simTime; i++) //should i increment before or after?
 					{
 						apriority[t].released = false;
 						apriority[t].done = true;
+						apriority[t].runtime = 0;
 					}
 					else
 					{
-						apriority[t].currDeadline += apriority[t].per;
 						apriority[t].done = true;
+						apriority[t].runtime = 0;
 					}
 				}
 							if (apriority[t].currDeadline == i)
