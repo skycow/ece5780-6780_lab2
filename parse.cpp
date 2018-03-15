@@ -112,6 +112,7 @@ int main(int argc, char** argv) {
 
 
     std::vector<TASK> priority = priSort2(tasks);
+	std::vector<TASK> apriority = priSort2(atasks);
     int numPreemptions = 0;
 	bool pTask = false;
 
@@ -173,6 +174,18 @@ for (int i = 0; i < simTime; i++) //should i increment before or after?
 					}
 				}
 			}
+			for (int t1 = 0; t1 < atasks.size(); t1++) //checking if a task was preemptively halted
+			{
+				if (t1 != t)
+				{
+					if (apriority[t1].runtime != 0 && !apriority[t1].preemted)
+					{
+						apriority[t1].preemted = true;
+						numPreemptions++;
+                        std::cout << i << " : " << apriority[t1].name << " is being preempted.\n";
+					}
+				}
+			}
 			priority[t].runtime += 1;
 			if (priority[t].runtime == priority[t].comp)
 			{
@@ -196,7 +209,7 @@ for (int i = 0; i < simTime; i++) //should i increment before or after?
 		}
 	}
 	if(!pTask){
-		std::vector<TASK> apriority = priSort2(atasks);
+		
 		for (int t = 0; t < tasks.size(); t++)
 		{
 			if (apriority[t].released)
